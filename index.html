@@ -2,121 +2,303 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نتا رو زدن؟</title>
+
 <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
     font-family:tahoma;
+    direction:rtl;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(circle at top,#1e293b,#0f172a 70%);
+    color:white;
+    overflow:hidden;
+}
+
+/* نورهای پس زمینه */
+
+.bg{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(160px);
+    opacity:.6;
+    z-index:-1;
+}
+
+.bg1{
+    width:350px;
+    height:350px;
+    background:#05717a;
+    top:-120px;
+    left:-120px;
+}
+
+.bg2{
+    width:300px;
+    height:300px;
+    background:#ca770a;
+    bottom:-100px;
+    right:-100px;
+}
+
+/* کارت اصلی */
+
+.card{
+    width:90%;
+    max-width:700px;
+    padding:35px;
+    border-radius:30px;
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 0 25px rgba(0,255,255,.2),
+    0 0 60px rgba(0,255,255,.1);
+
     text-align:center;
-    margin-top:80px;
-    direction: rtl;
 }
+
+h1{
+    font-size:32px;
+    margin-bottom:20px;
+    color:#00eaff;
+    text-shadow:0 0 15px #00eaff;
+}
+
 #result{
-    font-size:28px;
-    margin-top:30px;
-    font-weight: bold;
+    font-size:48px;
+    font-weight:bold;
+    margin:20px 0;
+    animation:pulse 2s infinite;
 }
-#details {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #555;
-    text-align: center;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.8;
+
+#details{
+    margin-top:25px;
+    font-size:15px;
+    line-height:2;
+}
+
+.status{
+    margin:10px;
+    padding:10px;
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+}
+
+.loading{
+    animation:spin 1s linear infinite;
+    display:inline-block;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.05);
+    }
+}
+
+@keyframes spin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+footer{
+    margin-top:20px;
+    opacity:.6;
+    font-size:12px;
 }
 </style>
 </head>
+
 <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js');
-    }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+}
 </script>
+
 <body>
 
-<div id="result">بزار چک کنم</div>
-<div id="details"></div>
+<div class="bg bg1"></div>
+<div class="bg bg2"></div>
+
+<div class="card">
+
+    <h1>🌐 نتا رو زدن؟</h1>
+
+    <div id="result">
+        <span class="loading">⚙️</span>
+        بزار چک کنم...
+    </div>
+
+    <div id="details"></div>
+
+    <footer>
+        <strong>ساخته شده برای تشخیص آخرالزمان اینترنت</strong> 💀
+    </footer>
+
+</div>
 
 <script>
-const sites = [
- { name: "گوگل", url: "https://www.google.com/favicon.ico" },
- { name: "ویکی‌پدیا", url: "https://www.wikipedia.org/static/apple-touch/wikipedia.png" },
- { name: "cdnjs", url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" },
- { name: "npm", url: "https://registry.npmjs.org/" },
- { name: "گیت‌هاب", url: "https://raw.githubusercontent.com/jeresig/jquery/master/package.json" }
-];
 
+const sites = [
+ { name: "<b>گوگل</b>", url: "https://www.google.com/favicon.ico" },
+ { name: "<b>ویکی‌پدیا</b>", url: "https://www.wikipedia.org/static/apple-touch/wikipedia.png" },
+ { name: "<b>cdnjs</b>", url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" },
+ { name: "<b>npm</b>", url: "https://registry.npmjs.org/" },
+ { name: "<b>گیت‌هاب</b>", url: "https://raw.githubusercontent.com/jeresig/jquery/master/package.json" }
+];
 const onlineTexts = [
     "نه نزدن ✅",
-    "هنوز نزدن! ⚡",
-    "نه باو، سالمه 🕺",
+    "هنوز نزدن ⚡",
+    "نه باو سالمه 🕺",
     "وصلی حاجی 🗿",
+    "فعلاً زنده‌ایم 😎",
+    "همه چی اوکیه 🚀"
 ];
 
 const offlineTexts = [
     "زدنننننن ❌",
-    "فاتحه... 💀",
-    "😔سیمو کشیدن 🔌",
-    "بومب! تموم شد 💥",
-    "هق... رفتیم تو اینترانت 😶‍🌫️",
-    "🫤حاجی زدن",
-    "نتو زدن😔"
+    "فاتحه 💀",
+    "سیمو کشیدن 🔌",
+    "تموم شد 💥",
+    "رفتیم تو اینترانت 😶‍🌫️",
+    "حاجی زدن 😔",
+    "نتو زدن 💔"
 ];
 
-function getRandomText(textArray) {
-    const randomIndex = Math.floor(Math.random() * textArray.length);
-    return textArray[randomIndex];
+function randomText(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
 }
 
-async function fetchWithTimeout(resource, options = {}) {
-    const { timeout = 3000 } = options;
-    
+async function fetchWithTimeout(resource, options={}){
+
+    const {timeout = 3000} = options;
+
     const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-    
-    try {
-        const response = await fetch(resource, {
-            ...options,
-            signal: controller.signal
-        });
+
+    const id = setTimeout(
+        ()=>controller.abort(),
+        timeout
+    );
+
+    try{
+
+        const response = await fetch(
+            resource,
+            {
+                ...options,
+                signal:controller.signal
+            }
+        );
+
         clearTimeout(id);
+
         return response;
-    } catch (error) {
+
+    }catch(err){
+
         clearTimeout(id);
-        throw error;
+
+        throw err;
     }
 }
 
 async function checkNet(){
-    const resultElement = document.getElementById("result");
-    const detailsElement = document.getElementById("details");
-    
+
+    const result =
+        document.getElementById("result");
+
+    const details =
+        document.getElementById("details");
+
     let okCount = 0;
 
-    for (const site of sites) {
-        const siteStatus = document.createElement("div");
-        siteStatus.innerText = `🔍 در حال تست ${site.name}...`;
-        detailsElement.appendChild(siteStatus);
+    for(const site of sites){
 
-        try {
-            await fetchWithTimeout(site.url, { mode: "no-cors", timeout: 30000 });
+        const div =
+            document.createElement("div");
+
+        div.className = "status";
+
+        div.innerHTML =
+            `🔍 در حال تست ${site.name}...`;
+
+        details.appendChild(div);
+
+        try{
+
+            await fetchWithTimeout(
+                site.url,
+                {
+                    mode:"no-cors",
+                    timeout:5000
+                }
+            );
+
             okCount++;
-            siteStatus.innerText = `🟢 ${site.name}: وصل شد`;
-            siteStatus.style.color = "green";
-        } catch (error) {
-            siteStatus.innerText = `🔴 ${site.name}: خطا در اتصال (یا تایم‌اوت)`;
-            siteStatus.style.color = "red";
+
+            div.innerHTML =
+                `🟢 ${site.name} : <b>وصل شد</b>`;
+
+            div.style.color =
+                "#159104";
+
+        }catch{
+
+            div.innerHTML =
+                `🔴 ${site.name} : خطا`;
+
+            div.style.color =
+                "#f87171";
         }
     }
 
     if(okCount > 0){
-        resultElement.innerText = getRandomText(onlineTexts);
-    } else {
-        resultElement.innerText = getRandomText(offlineTexts);
+
+        result.innerHTML =
+            randomText(onlineTexts);
+
+        result.style.color =
+            "#4ade80";
+
+        document.body.style.boxShadow =
+            "inset 0 0 200px rgba(0,255,100,.08)";
+
+    }else{
+
+        result.innerHTML =
+            randomText(offlineTexts);
+
+        result.style.color =
+            "#ff4d4d";
+
+        document.body.style.boxShadow =
+            "inset 0 0 200px rgba(255,0,0,.15)";
     }
 }
 
-document.addEventListener("DOMContentLoaded", checkNet);
+document.addEventListener(
+    "DOMContentLoaded",
+    checkNet
+);
+
 </script>
 
 </body>
